@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fulfilment desk — Horizon</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EFEEEA;--surface:#FFFFFF;--ink:#14181C;--body:#3C434B;--muted:#8A929C;
+    --blue:#7A2BD0;--blue-ink:#5B1FA6;--blue-soft:#F2E9FC;--gold:#F262A6;
+    --verified:#1B7A5A;--verified-soft:#E6F3EC;--warn:#C4512A;
+    --line:#E7E5DF;--line-soft:#F0EEE9;--r:16px;--pill:999px;
+    --shadow:0 18px 40px -22px rgba(20,24,28,.35);--shadow-sm:0 6px 18px -10px rgba(20,24,28,.28);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1{margin:0;letter-spacing:-.03em;font-weight:800;line-height:1.06}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+
+  /* nav */
+  .mark{width:36px;height:30px;flex:none;background:url("horizon-mark.png") center/contain no-repeat}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .logo em{font-style:normal;color:var(--muted);font-weight:500}
+  .nav-outer{position:sticky;top:0;z-index:40;padding:14px 0;background:linear-gradient(var(--bg),rgba(239,238,234,0))}
+  .nav{max-width:1180px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--pill);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;padding:9px 16px 9px 20px}
+  .who{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+  .who button{background:var(--surface);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:12px;font-weight:600;padding:7px 13px;border-radius:var(--pill);cursor:pointer}
+  .who button:hover{border-color:var(--ink)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 22px 80px}
+  .eyebrow{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:5px 13px;border-radius:var(--pill);margin-bottom:14px}
+
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .field label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .field input,.field select{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;width:100%;transition:.16s}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+  button.go{background:var(--blue);color:#fff;border:none;border-radius:var(--pill);font-family:inherit;font-weight:600;font-size:14px;padding:12px 22px;cursor:pointer;transition:.16s}
+  button.go:hover{background:var(--blue-ink)}
+  button.go:disabled{background:#C8CDD4;color:#fff;cursor:not-allowed}
+  .signin{max-width:400px;background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-sm);padding:28px;margin-top:8px}
+  .signin button.go{width:100%}
+
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;flex:1;min-width:140px;box-shadow:var(--shadow-sm)}
+  .stat .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .stat .v{font-size:25px;font-weight:800;letter-spacing:-.03em;margin-top:4px}
+  .stat .v.good{color:var(--verified)}
+  .stat .v.warn{color:var(--blue)}
+
+  table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  th{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:500;white-space:nowrap}
+  td{padding:13px 14px;border-bottom:1px solid var(--line-soft);font-size:13.5px;vertical-align:middle}
+  td.m{font-family:'IBM Plex Mono',monospace;font-size:12.5px}
+  tr:last-child td{border-bottom:none}
+  .scroll{overflow-x:auto;border-radius:var(--r)}
+  .pill{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:var(--pill);white-space:nowrap;font-weight:500}
+  .pill.paid{background:#FDF1DA;color:#8A5A12}
+  .pill.issuing{background:var(--blue-soft);color:var(--blue-ink)}
+  .act{background:var(--ink);color:#fff;border:none;border-radius:var(--pill);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;cursor:pointer;white-space:nowrap}
+  .act:hover{background:#000}
+  .act.ghost{background:none;border:1px solid var(--line);color:var(--muted);margin-left:6px}
+  .act.ghost:hover{border-color:var(--warn);color:var(--warn);background:none}
+
+  .age{font-family:'IBM Plex Mono',monospace;font-size:11px}
+  .age.old{color:var(--warn);font-weight:600}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:44px 24px;text-align:center;color:var(--muted)}
+  .empty b{display:block;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:5px}
+
+  dialog{border:none;border-radius:22px;padding:0;max-width:460px;width:calc(100% - 40px);box-shadow:var(--shadow);overflow:hidden}
+  dialog::backdrop{background:rgba(12,16,22,.45)}
+  .dlg-head{background:var(--ink);color:#fff;padding:16px 20px}
+  .dlg-head b{font-size:16px;font-weight:800;display:block}
+  .dlg-head span{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.6)}
+  .dlg-body{padding:20px}
+  .dlg-foot{padding:0 20px 20px;display:flex;gap:10px}
+  .dlg-foot button{flex:1}
+  .cancel{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:var(--pill);font-family:inherit;font-weight:600;font-size:14px;padding:12px;cursor:pointer}
+  .cancel:hover{border-color:var(--ink)}
+  .err{background:#FBEDE8;border-left:3px solid var(--warn);color:#7A3A20;padding:11px 13px;border-radius:12px;margin-bottom:14px;font-size:13.5px}
+  .hidden{display:none}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .helper{font-size:12.5px;color:var(--muted);margin:-6px 0 14px}
+</style>
+</head>
+<body>
+<div class="nav-outer">
+  <nav class="nav">
+    <div class="logo"><span class="mark"></span>Horizon <em>/ Fulfilment desk</em></div>
+    <div class="who" id="who"></div>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- sign in -->
+  <div id="auth" class="signin">
+    <div class="eyebrow">Staff only</div>
+    <h1 style="font-size:28px;margin-bottom:8px">Sign in</h1>
+    <p style="color:var(--muted);margin:0 0 22px">We'll email you a link. No password to forget.</p>
+    <div id="auth-err" class="err hidden"></div>
+    <div class="field">
+      <label for="em">Work email</label>
+      <input id="em" type="email" placeholder="you@adamenstravels.com">
+    </div>
+    <button class="go" id="auth-btn" onclick="signIn()">Email me a link</button>
+  </div>
+
+  <!-- desk -->
+  <div id="desk" class="hidden">
+    <div class="eyebrow">Oldest first</div>
+    <h1 style="font-size:28px;margin-bottom:22px">Queue</h1>
+    <div class="stats" id="stats"></div>
+    <div id="queue"></div>
+  </div>
+</div>
+
+<!-- deliver -->
+<dialog id="dlg">
+  <div class="dlg-head"><b>Record the reservation</b><span id="dlg-ref">—</span></div>
+  <div class="dlg-body">
+    <div id="dlg-err" class="err hidden"></div>
+    <div class="field">
+      <label for="d-pnr">Booking reference</label>
+      <input id="d-pnr" class="mono" placeholder="XR4TQ9" maxlength="8" style="text-transform:uppercase;letter-spacing:.14em">
+    </div>
+    <p class="helper">Copy it from the airline. Don't type it from memory — one wrong character and the customer gets turned away at a counter.</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="d-airline">Carrier</label>
+        <input id="d-airline" class="mono" placeholder="KL" maxlength="2" style="text-transform:uppercase">
+      </div>
+      <div class="field">
+        <label for="d-cost">Cost to us</label>
+        <input id="d-cost" type="number" step="0.01" min="0" placeholder="9.00">
+      </div>
+    </div>
+    <div class="field">
+      <label for="d-verify">Verification link</label>
+      <input id="d-verify" type="url" placeholder="https://www.klm.com/manage-booking">
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="d-exp">Hold lapses</label>
+        <input id="d-exp" type="datetime-local">
+      </div>
+      <div class="field">
+        <label for="d-src">Source</label>
+        <select id="d-src">
+          <option value="duffel_hold">Duffel hold</option>
+          <option value="supplier_api">Supplier API</option>
+          <option value="supplier_manual">Supplier, by hand</option>
+          <option value="free_cancel_rate">Free-cancel rate</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="dlg-foot">
+    <button class="cancel" onclick="document.getElementById('dlg').close()">Cancel</button>
+    <button class="go" id="dlg-go" onclick="deliver()">Send to customer</button>
+  </div>
+</dialog>
+
+<!-- fail -->
+<dialog id="fdlg">
+  <div class="dlg-head"><b>Couldn't issue</b><span id="fdlg-ref">—</span></div>
+  <div class="dlg-body">
+    <div id="fdlg-err" class="err hidden"></div>
+    <div class="field">
+      <label for="f-reason">What happened</label>
+      <input id="f-reason" placeholder="No hold-eligible fare on this route">
+    </div>
+    <p class="helper">This gets recorded against the order. Refund in Paystack immediately after — the system won't do it for you.</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="cancel" onclick="document.getElementById('fdlg').close()">Cancel</button>
+    <button class="go" id="fdlg-go" onclick="markFailed()">Mark failed</button>
+  </div>
+</dialog>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const URL_ = "https://YOUR-PROJECT.supabase.co";
+const ANON = "YOUR_ANON_KEY";
+const sb = createClient(URL_, ANON);
+
+const $ = (id) => document.getElementById(id);
+let active = null;
+
+// ---------- auth ----------
+window.signIn = async () => {
+  const email = $("em").value.trim();
+  $("auth-err").classList.add("hidden");
+  if (!email.includes("@")) {
+    $("auth-err").textContent = "Enter your work email.";
+    return $("auth-err").classList.remove("hidden");
+  }
+  $("auth-btn").disabled = true;
+  const { error } = await sb.auth.signInWithOtp({
+    email, options: { emailRedirectTo: location.href },
+  });
+  $("auth-btn").disabled = false;
+  if (error) {
+    $("auth-err").textContent = "Couldn't send the link. Try again.";
+    return $("auth-err").classList.remove("hidden");
+  }
+  $("auth-btn").textContent = "Link sent — check your inbox";
+  $("auth-btn").disabled = true;
+};
+
+window.signOut = async () => { await sb.auth.signOut(); location.reload(); };
+
+sb.auth.onAuthStateChange(async (_e, session) => {
+  if (!session) return;
+  // Confirm this account is actually on the desk before showing anything.
+  const { data: me } = await sb.from("staff").select("email,role").maybeSingle();
+  if (!me) {
+    $("auth-err").textContent = "That account isn't on the desk. Ask an admin to add you.";
+    $("auth-err").classList.remove("hidden");
+    return sb.auth.signOut();
+  }
+  $("who").innerHTML = `${me.email} · ${me.role}<button onclick="signOut()">Sign out</button>`;
+  $("auth").classList.add("hidden");
+  $("desk").classList.remove("hidden");
+  load();
+  setInterval(load, 30000);
+});
+
+// ---------- queue ----------
+const money = (minor, cur) =>
+  `${cur === "USD" ? "$" : "GH₵"}${(minor / 100).toFixed(2)}`;
+
+function ageOf(iso) {
+  const mins = Math.floor((Date.now() - new Date(iso)) / 60000);
+  if (mins < 60) return [`${mins}m`, mins > 45];
+  const h = Math.floor(mins / 60);
+  return [`${h}h ${mins % 60}m`, true];
+}
+
+async function load() {
+  const { data: rows, error } = await sb
+    .from("orders")
+    .select("reference,status,product,given_names,family_name,passenger_count,origin_iata,destination_iata,depart_date,hotel_city,currency,amount_charged_minor,paid_at,fulfilled_by")
+    .in("status", ["paid", "issuing"])
+    .order("paid_at", { ascending: true });
+
+  if (error) return;
+
+  const { data: today } = await sb
+    .from("orders")
+    .select("amount_charged_minor,supplier_cost_minor,processor_fee_minor,margin_minor,status")
+    .gte("created_at", new Date().toISOString().slice(0, 10));
+
+  renderStats(rows ?? [], today ?? []);
+  renderQueue(rows ?? []);
+}
+
+function renderStats(queue, today) {
+  const done = today.filter((o) => o.status === "delivered");
+  const rev = done.reduce((s, o) => s + o.amount_charged_minor, 0);
+  const cost = done.reduce((s, o) => s + o.supplier_cost_minor, 0);
+  const marg = done.reduce((s, o) => s + o.margin_minor, 0);
+  $("stats").innerHTML = `
+    <div class="stat"><div class="k">Waiting</div><div class="v ${queue.length ? "warn" : ""}">${queue.length}</div></div>
+    <div class="stat"><div class="k">Delivered today</div><div class="v">${done.length}</div></div>
+    <div class="stat"><div class="k">Revenue today</div><div class="v">GH₵${(rev / 100).toFixed(0)}</div></div>
+    <div class="stat"><div class="k">Supplier cost</div><div class="v">GH₵${(cost / 100).toFixed(0)}</div></div>
+    <div class="stat"><div class="k">Margin</div><div class="v good">GH₵${(marg / 100).toFixed(0)}</div></div>`;
+}
+
+function renderQueue(rows) {
+  if (!rows.length) {
+    return ($("queue").innerHTML =
+      `<div class="empty"><b>Queue is clear</b>Nothing waiting. New paid orders appear here on their own.</div>`);
+  }
+
+  $("queue").innerHTML = `<div class="scroll"><table>
+    <thead><tr>
+      <th>Order</th><th>Waiting</th><th>Traveller</th><th>Item</th>
+      <th>Charged</th><th>Status</th><th></th>
+    </tr></thead>
+    <tbody>${rows.map(row).join("")}</tbody>
+  </table></div>`;
+}
+
+function row(o) {
+  const [age, old] = ageOf(o.paid_at);
+  const item = o.product === "hotel"
+    ? o.hotel_city
+    : `${o.origin_iata} → ${o.destination_iata} · ${o.depart_date ?? ""}`;
+  const claimed = o.status === "issuing";
+  return `<tr>
+    <td class="m">${o.reference}</td>
+    <td><span class="age ${old ? "old" : ""}">${age}</span></td>
+    <td>${o.family_name.toUpperCase()}/${o.given_names}${o.passenger_count > 1 ? ` <span class="pill issuing">+${o.passenger_count - 1}</span>` : ""}</td>
+    <td class="m">${item}</td>
+    <td class="m">${money(o.amount_charged_minor, o.currency)}</td>
+    <td><span class="pill ${claimed ? "issuing" : "paid"}">${claimed ? (o.fulfilled_by ?? "issuing") : "waiting"}</span></td>
+    <td style="text-align:right;white-space:nowrap">
+      ${claimed ? "" : `<button class="act" onclick="claim('${o.reference}')">Claim</button>`}
+      <button class="act" onclick="openDeliver('${o.reference}')">Deliver</button>
+      <button class="act ghost" onclick="openFail('${o.reference}')">Can't issue</button>
+    </td>
+  </tr>`;
+}
+
+// ---------- actions ----------
+async function call(payload) {
+  const { data: { session } } = await sb.auth.getSession();
+  const res = await fetch(`${URL_}/functions/v1/deliver-reservation`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return { ok: res.ok, body: await res.json() };
+}
+
+window.claim = async (ref) => {
+  const { ok, body } = await call({ action: "claim", reference: ref });
+  if (!ok) alert(body.error ?? "Couldn't claim that.");
+  load();
+};
+
+window.openDeliver = (ref) => {
+  active = ref;
+  $("dlg-ref").textContent = ref;
+  $("dlg-err").classList.add("hidden");
+  ["d-pnr", "d-airline", "d-cost", "d-verify"].forEach((i) => ($(i).value = ""));
+  const t = new Date(Date.now() + 48 * 3600e3);
+  t.setMinutes(t.getMinutes() - t.getTimezoneOffset());
+  $("d-exp").value = t.toISOString().slice(0, 16);
+  $("dlg").showModal();
+};
+
+window.deliver = async () => {
+  $("dlg-go").disabled = true;
+  const { ok, body } = await call({
+    action: "deliver",
+    reference: active,
+    booking_reference: $("d-pnr").value,
+    airline_iata: $("d-airline").value,
+    verify_url: $("d-verify").value,
+    hold_expires_at: $("d-exp").value ? new Date($("d-exp").value).toISOString() : "",
+    source: $("d-src").value,
+    supplier_cost_minor: Math.round(parseFloat($("d-cost").value || "0") * 100),
+  });
+  $("dlg-go").disabled = false;
+  if (!ok) {
+    $("dlg-err").textContent = body.error ?? "Couldn't save that.";
+    return $("dlg-err").classList.remove("hidden");
+  }
+  $("dlg").close();
+  load();
+};
+
+window.openFail = (ref) => {
+  active = ref;
+  $("fdlg-ref").textContent = ref;
+  $("f-reason").value = "";
+  $("fdlg-err").classList.add("hidden");
+  $("fdlg").showModal();
+};
+
+window.markFailed = async () => {
+  $("fdlg-go").disabled = true;
+  const { ok, body } = await call({
+    action: "fail", reference: active, reason: $("f-reason").value,
+  });
+  $("fdlg-go").disabled = false;
+  if (!ok) {
+    $("fdlg-err").textContent = body.error ?? "Couldn't save that.";
+    return $("fdlg-err").classList.remove("hidden");
+  }
+  $("fdlg").close();
+  alert(body.reminder ?? "Marked failed.");
+  load();
+};
+</script>
+</body>
+</html>

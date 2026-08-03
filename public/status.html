@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track your reservation — Horizon</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EFEEEA;--surface:#FFFFFF;--ink:#14181C;--body:#3C434B;--muted:#8A929C;
+    --blue:#7A2BD0;--blue-ink:#5B1FA6;--blue-soft:#F2E9FC;--gold:#F262A6;--verified:#1B7A5A;
+    --line:#E7E5DF;--line-soft:#F0EEE9;--warn:#C4512A;--r:16px;--pill:999px;
+    --shadow:0 18px 40px -22px rgba(20,24,28,.35);--shadow-sm:0 6px 18px -10px rgba(20,24,28,.28);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2{margin:0;letter-spacing:-.03em;font-weight:800;line-height:1.06}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+
+  /* nav */
+  .mark{width:36px;height:30px;flex:none;background:url("horizon-mark.png") center/contain no-repeat}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .nav-outer{position:sticky;top:0;z-index:40;padding:14px 0;background:linear-gradient(var(--bg),rgba(239,238,234,0))}
+  .nav{max-width:680px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--pill);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:14px;padding:9px 10px 9px 20px}
+  .nav .sp{margin-left:auto}
+  .btn{font-family:inherit;font-weight:600;font-size:14px;border-radius:var(--pill);cursor:pointer;padding:10px 18px;border:1px solid transparent;transition:.16s;white-space:nowrap;text-decoration:none;display:inline-block}
+  .btn-line{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .btn-line:hover{border-color:var(--ink)}
+  .btn-blue{background:var(--blue);color:#fff}
+  .btn-blue:hover{background:var(--blue-ink)}
+  .btn-blue:disabled{background:#C8CDD4;color:#fff;cursor:not-allowed}
+
+  .wrap{max-width:640px;margin:0 auto;padding:34px 22px 80px}
+  .eyebrow{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);background:var(--blue-soft);padding:5px 13px;border-radius:var(--pill);margin-bottom:16px}
+  h1{font-size:32px;font-weight:800;margin-bottom:10px}
+  .lede{color:var(--muted);margin:0 0 28px;max-width:48ch}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow-sm);padding:26px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .field label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .field input{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;width:100%;transition:.16s}
+  .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+  .field input::placeholder{color:#B4BAC1}
+  #ref{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+  button.go{width:100%;background:var(--blue);color:#fff;border:none;border-radius:var(--pill);font-family:inherit;font-weight:600;font-size:15px;padding:13px 24px;cursor:pointer;margin-top:6px;transition:.16s}
+  button.go:hover{background:var(--blue-ink)}
+  button.go:disabled{background:#C8CDD4;color:#fff;cursor:not-allowed}
+  .err{background:#FBEDE8;border-left:3px solid var(--warn);color:#7A3A20;padding:12px 14px;border-radius:12px;margin-top:16px;font-size:14px}
+  .hidden{display:none}
+
+  /* stub */
+  .stub{background:var(--ink);color:#fff;border-radius:var(--r);overflow:hidden;margin-top:26px}
+  .stub-top{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,.14);display:flex;justify-content:space-between;align-items:center}
+  .stub-top .lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+  .stub-top .doc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.55)}
+  .stub-body{padding:20px 18px}
+  .route{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .port{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:600;letter-spacing:.04em}
+  .arrow{flex:1;height:1px;background:rgba(255,255,255,.28);position:relative}
+  .arrow::after{content:"";position:absolute;right:0;top:-3px;border-left:6px solid rgba(255,255,255,.5);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
+  .rows{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+  .row .k{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:3px}
+  .row .v{font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:500}
+  .perf{height:0;border-top:1.5px dashed rgba(255,255,255,.3);margin:20px -18px 18px;position:relative}
+  .perf::before,.perf::after{content:"";position:absolute;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--bg)}
+  .perf::before{left:-9px}.perf::after{right:-9px}
+  .pnr-block{text-align:center}
+  .pnr-block .k{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  .pnr{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;letter-spacing:.3em;margin:6px 0 2px;color:var(--gold)}
+  .pnr.waiting{font-size:13px;letter-spacing:.13em;color:rgba(255,255,255,.4);font-weight:400}
+  .expiry{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.5)}
+  .verify-strip{background:rgba(27,122,90,.18);border-top:1px solid rgba(27,122,90,.4);padding:13px 18px}
+  .verify-strip b{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#CFEEE0;margin-bottom:5px}
+  .verify-strip a{color:#9FD9C1;font-family:'IBM Plex Mono',monospace;font-size:12px;word-break:break-all}
+  .verify-strip p{margin:7px 0 0;font-size:12.5px;color:#9FD9C1;line-height:1.5}
+
+  .note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:12px;padding:15px 17px;margin-top:18px;font-size:14px;color:var(--body)}
+  .note b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="nav-outer">
+  <nav class="nav">
+    <div class="logo"><span class="mark"></span>Horizon</div>
+    <a class="btn btn-line sp" href="index.html">Book a reservation</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <div id="lookup">
+    <div class="eyebrow">Order status</div>
+    <h1>Track your reservation</h1>
+    <p class="lede">Enter your order number and the email address you booked with.</p>
+    <div class="card">
+      <div class="field">
+        <label for="ref">Order number</label>
+        <input id="ref" placeholder="AD-02472" maxlength="12">
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="you@example.com">
+      </div>
+      <button class="go" id="btn" onclick="lookup()">Find my order</button>
+      <div id="err" class="err hidden"></div>
+    </div>
+  </div>
+
+  <div id="result" class="hidden">
+    <div class="eyebrow" id="state-label">—</div>
+    <h1 id="state-head">—</h1>
+    <p class="lede" id="state-body">—</p>
+
+    <div class="stub">
+      <div class="stub-top">
+        <span class="lbl">Your reservation</span>
+        <span class="doc" id="s-doc">—</span>
+      </div>
+      <div class="stub-body">
+        <div class="route">
+          <span class="port" id="s-from">•••</span>
+          <span class="arrow"></span>
+          <span class="port" id="s-to">•••</span>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k">Type</div><div class="v" id="s-type">—</div></div>
+          <div class="row"><div class="k">Date</div><div class="v" id="s-date">—</div></div>
+        </div>
+        <div class="perf"></div>
+        <div class="pnr-block">
+          <div class="k">Booking reference</div>
+          <div class="pnr waiting" id="s-pnr">Not issued yet</div>
+          <div class="expiry" id="s-exp"></div>
+        </div>
+      </div>
+      <div class="verify-strip" id="verify"></div>
+    </div>
+
+    <div class="note" id="footnote"></div>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+// anon key only — safe in the browser, RLS denies it everything except
+// the get_order_status function, which needs a matching email.
+const sb = createClient("https://YOUR-PROJECT.supabase.co", "YOUR_ANON_KEY");
+
+const $ = (id) => document.getElementById(id);
+const MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+const fmt = (d) => {
+  if (!d) return "—";
+  const x = new Date(d + "T00:00:00");
+  return `${String(x.getDate()).padStart(2,'0')} ${MON[x.getMonth()]} ${x.getFullYear()}`;
+};
+
+const STATES = {
+  pending_payment: ["Awaiting payment", "We haven't received payment", "This order was started but not paid for. Nothing has been charged. Start again if you still need it."],
+  paid:      ["In the queue", "We have your payment", "Your reservation is with our desk. The booking reference usually lands within two hours."],
+  issuing:   ["Being issued", "Creating your reservation now", "An agent is booking this with the airline. Watch your inbox."],
+  delivered: ["Issued", "Your reservation is ready", "The booking reference is below. Check it on the airline's own site before you use it for anything."],
+  failed:    ["Couldn't issue", "We weren't able to book this route", "We've refunded you in full. It takes a few working days to reach your account, depending on your bank."],
+  refunded:  ["Refunded", "This order was refunded", "The money is on its way back to you."],
+  expired:   ["Lapsed", "This reservation has expired", "Holds lapse by design after 24–72 hours. Order again if you still need proof of onward travel."],
+};
+
+function showErr(msg) {
+  const e = $("err");
+  e.textContent = msg;
+  e.classList.remove("hidden");
+}
+
+window.lookup = async () => {
+  $("err").classList.add("hidden");
+  const ref = $("ref").value.trim().toUpperCase();
+  const email = $("email").value.trim();
+
+  if (!ref) return showErr("Enter the order number from your confirmation email.");
+  if (!email.includes("@")) return showErr("Enter the email address you booked with.");
+
+  $("btn").disabled = true;
+  $("btn").textContent = "Looking…";
+
+  const { data, error } = await sb.rpc("get_order_status", { p_reference: ref, p_email: email });
+
+  $("btn").disabled = false;
+  $("btn").textContent = "Find my order";
+
+  if (error) {
+    if (/rate_limited/i.test(error.message || "") || /too many/i.test(error.hint || ""))
+      return showErr("Too many attempts just now. Wait a minute, then try again.");
+    return showErr("Something went wrong on our side. Try again in a moment.");
+  }
+  if (!data || !data.length) {
+    return showErr("No order matches that number and email. Check both against your confirmation email.");
+  }
+  render(data[0]);
+};
+
+function render(o) {
+  const [label, head, body] = STATES[o.status] ?? ["Status", o.status, ""];
+  $("state-label").textContent = label;
+  $("state-head").textContent = head;
+  $("state-body").textContent = body;
+
+  $("s-doc").textContent = o.reference;
+  $("s-type").textContent =
+    o.product === "flight" ? "Flight" : o.product === "hotel" ? "Hotel" : "Flight + hotel";
+
+  if (o.product === "hotel") {
+    $("s-from").textContent = "HTL";
+    $("s-to").textContent = "STAY";
+    $("s-date").textContent = o.hotel_city ?? "—";
+  } else {
+    $("s-from").textContent = o.origin_iata ?? "•••";
+    $("s-to").textContent = o.destination_iata ?? "•••";
+    $("s-date").textContent = fmt(o.depart_date);
+  }
+
+  const pnr = $("s-pnr");
+  if (o.booking_reference) {
+    pnr.textContent = o.booking_reference;
+    pnr.classList.remove("waiting");
+  } else {
+    pnr.textContent = o.status === "failed" || o.status === "refunded" ? "Not issued" : "Not issued yet";
+    pnr.classList.add("waiting");
+  }
+
+  $("s-exp").textContent = o.hold_expires_at
+    ? `Held until ${new Date(o.hold_expires_at).toUTCString()}`
+    : "";
+
+  $("verify").innerHTML = o.verify_url
+    ? `<b>Verify this yourself</b>
+       <a href="${o.verify_url}" target="_blank" rel="noopener">${o.verify_url}</a>
+       <p>Enter the reference above and confirm your name appears. If it doesn't, email us before you use it anywhere.</p>`
+    : `<b>How verification works</b>
+       <p>When your reference is issued we'll include the exact link where you can check it in the airline's own system.</p>`;
+
+  $("footnote").innerHTML = o.booking_reference
+    ? `<b>This is a reservation, not a ticket.</b> It's real and it's verifiable, but it isn't paid for and you can't fly on it. It lapses at the time shown above.`
+    : `<b>Nothing to do right now.</b> We'll email you the moment the reference is ready. No need to refresh this page.`;
+
+  $("lookup").classList.add("hidden");
+  $("result").classList.remove("hidden");
+}
+
+// deep link from the confirmation email: /status?ref=AD-02472&t=…
+const q = new URLSearchParams(location.search);
+if (q.get("ref")) $("ref").value = q.get("ref");
+</script>
+</body>
+</html>

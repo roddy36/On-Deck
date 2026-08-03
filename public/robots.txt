@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /desk.html
+Disallow: /status.html
+
+Sitemap: https://your-horizon-domain.com/sitemap.xml
