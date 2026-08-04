@@ -1,0 +1,10 @@
+# Normalise line endings so Git stops warning about LF/CRLF.
+* text=auto eol=lf
+
+# Treat binary assets as binary (no line-ending conversion).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
