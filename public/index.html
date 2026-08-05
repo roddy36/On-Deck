@@ -8,7 +8,7 @@
 <meta name="keywords" content="dummy ticket, dummy ticket for visa, dummy flight ticket, flight reservation for visa, hotel reservation for visa, proof of onward travel, onward ticket, verifiable flight reservation, flight itinerary for visa, dummy hotel booking, visa application ticket, onward travel proof, Accra travel agency, Ghana visa reservation">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://your-horizon-domain.com/">
-<meta name="theme-color" content="#2E6BF6">
+<meta name="theme-color" content="#B25C3B">
 <link rel="icon" type="image/png" href="horizon-mark.png">
 <link rel="apple-touch-icon" href="horizon-mark.png">
 <!-- Open Graph / social -->
@@ -41,23 +41,23 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#EFEEEA;
-    --surface:#FFFFFF;
-    --ink:#14181C;
-    --body:#3C434B;
-    --muted:#8A929C;
-    --blue:#7A2BD0;
-    --blue-ink:#5B1FA6;
-    --blue-soft:#F2E9FC;
-    --gold:#F262A6;
-    --verified:#1B7A5A;
-    --verified-soft:#E6F3EC;
-    --warn:#C4512A;
-    --line:#E7E5DF;
-    --line-soft:#F0EEE9;
+    --bg:#F4EEE3;
+    --surface:#FFFDF9;
+    --ink:#2C2620;
+    --body:#5E564B;
+    --muted:#9A8E7C;
+    --blue:#B25C3B;
+    --blue-ink:#8F4529;
+    --blue-soft:#F3E6DB;
+    --gold:#B08D57;
+    --verified:#6E7A55;
+    --verified-soft:#E9ECE0;
+    --warn:#A85A32;
+    --line:#E8DFCE;
+    --line-soft:#F2EBDD;
     --r:16px;
     --r-lg:26px;
     --pill:999px;
@@ -73,7 +73,7 @@
     font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
   }
   .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
-  h1,h2,h3{margin:0;letter-spacing:-0.03em;font-weight:800;line-height:1.06;}
+  h1,h2,h3{margin:0;font-family:'Fraunces',Georgia,'Times New Roman',serif;letter-spacing:-0.01em;font-weight:600;line-height:1.1;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 22px;}
 
@@ -112,7 +112,7 @@
   .hero{margin-top:6px;position:relative;}
   .hero-media{
     position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:460px;
-    background:linear-gradient(135deg,#C97B3C,#8F4E86 55%,#2E4B8F);
+    background:linear-gradient(135deg,#C9A27A,#9C6B4E 55%,#5E4636);
     display:flex;align-items:center;justify-content:center;text-align:center;
   }
   .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
@@ -124,7 +124,7 @@
     padding:6px 14px;border-radius:var(--pill);margin-bottom:20px;
   }
   .hero-copy h1{font-size:clamp(30px,5vw,54px);text-shadow:0 2px 24px rgba(0,0,0,.25);}
-  .hero-copy h1 em{font-style:normal;color:#FF6FB5;}
+  .hero-copy h1 em{font-style:italic;color:#E6C79B;}
   .hero-copy p{max-width:52ch;margin:18px auto 0;font-size:16.5px;color:rgba(255,255,255,.92);font-weight:500;}
 
   /* ---------- booking card ---------- */
@@ -225,13 +225,13 @@
   .method.off{opacity:.4;pointer-events:none;}
 
   /* ---------- chatbot ---------- */
-  #chat-fab{position:fixed;right:20px;bottom:20px;z-index:80;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#7A2BD0,#E0218A);box-shadow:0 12px 30px -8px rgba(122,43,208,.6);display:flex;align-items:center;justify-content:center;transition:.18s;}
+  #chat-fab{position:fixed;right:20px;bottom:20px;z-index:80;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,#B25C3B,#C0894F);box-shadow:0 12px 30px -8px rgba(140,74,45,.55);display:flex;align-items:center;justify-content:center;transition:.18s;}
   #chat-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px -8px rgba(122,43,208,.7);}
   #chat-fab svg{width:26px;height:26px;fill:#fff;}
   #chat-fab.hidden{display:none;}
   #chat-panel{position:fixed;right:20px;bottom:20px;z-index:81;width:372px;max-width:calc(100vw - 32px);height:566px;max-height:calc(100vh - 40px);background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:0 26px 64px -18px rgba(20,24,28,.55);display:none;flex-direction:column;overflow:hidden;}
   #chat-panel.open{display:flex;}
-  .chat-head{background:linear-gradient(135deg,#7A2BD0,#E0218A);color:#fff;padding:15px 16px;display:flex;align-items:center;gap:11px;}
+  .chat-head{background:linear-gradient(135deg,#B25C3B,#C0894F);color:#fff;padding:15px 16px;display:flex;align-items:center;gap:11px;}
   .chat-head .ava{width:38px;height:38px;border-radius:50%;background:#fff url("horizon-mark.png") center/26px no-repeat;flex:none;}
   .chat-head b{font-size:15px;display:block;line-height:1.2;}
   .chat-head i{font-style:normal;font-size:11.5px;opacity:.9;display:flex;align-items:center;gap:5px;}
@@ -297,8 +297,8 @@
   .pnr-block .k{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);}
   .pnr{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;letter-spacing:.3em;margin:6px 0 2px;color:var(--gold);}
   .pnr.pending{font-size:13px;letter-spacing:.12em;color:rgba(255,255,255,.38);font-weight:400;}
-  .verify-strip{background:rgba(27,122,90,.18);border-top:1px solid rgba(27,122,90,.4);padding:11px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.5;color:#9FD9C1;}
-  .verify-strip b{color:#CFEEE0;font-weight:600;display:block;letter-spacing:.09em;text-transform:uppercase;font-size:9.5px;margin-bottom:3px;}
+  .verify-strip{background:rgba(110,122,85,.2);border-top:1px solid rgba(176,141,87,.45);padding:11px 18px;font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.5;color:#D8CBA8;}
+  .verify-strip b{color:#EBD9B4;font-weight:600;display:block;letter-spacing:.09em;text-transform:uppercase;font-size:9.5px;margin-bottom:3px;}
 
   /* ---------- price ---------- */
   .price{background:var(--bg);border-radius:var(--r);padding:16px;margin-top:14px;}
@@ -330,9 +330,9 @@
   .rcard{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;box-shadow:var(--shadow-sm);}
   .rcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   .rcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,26,0) 35%,rgba(10,16,26,.72));}
-  .rcard.c1{background:linear-gradient(135deg,#2E6BF6,#153A8C);}
-  .rcard.c2{background:linear-gradient(135deg,#1B7A5A,#0C3F2E);}
-  .rcard.c3{background:linear-gradient(135deg,#C97B3C,#7A3E86);}
+  .rcard.c1{background:linear-gradient(135deg,#B26A45,#7A4327);}
+  .rcard.c2{background:linear-gradient(135deg,#7E8A63,#4F5A3B);}
+  .rcard.c3{background:linear-gradient(135deg,#C0894F,#8A5A34);}
   .rcard .badge{position:absolute;top:14px;right:14px;z-index:3;background:var(--surface);color:var(--ink);border-radius:14px;padding:8px 12px;box-shadow:var(--shadow-sm);text-align:right;}
   .rcard .badge b{display:block;font-size:17px;font-weight:800;letter-spacing:-0.02em;}
   .rcard .badge i{font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
@@ -357,7 +357,7 @@
   .isnt li::before{content:"✕";color:var(--warn);}
 
   /* ---------- cta ---------- */
-  .cta{position:relative;margin-top:64px;border-radius:var(--r-lg);overflow:hidden;color:#fff;text-align:center;background:linear-gradient(135deg,#C97B3C,#7A3E86 60%,#2E4B8F);}
+  .cta{position:relative;margin-top:64px;border-radius:var(--r-lg);overflow:hidden;color:#fff;text-align:center;background:linear-gradient(135deg,#8A5A3C,#5E4636 60%,#3A2C22);}
   .cta img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
   .cta::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,24,.55),rgba(10,14,24,.7));}
   .cta-inner{position:relative;z-index:2;padding:72px 24px;}
