@@ -148,7 +148,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 // anon key only — safe in the browser, RLS denies it everything except
 // the get_order_status function, which needs a matching email.
-const sb = createClient("https://YOUR-PROJECT.supabase.co", "YOUR_ANON_KEY");
+const sb = createClient("https://okwdufmcfqqbpqctekoz.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2R1Zm1jZnFxYnBxY3Rla296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0NzY0MjEsImV4cCI6MjEwMjA1MjQyMX0.wApjQEeF4cUAoshB6b3QtfXbDCjRmu54bEwge_JSFOo");
 
 const $ = (id) => document.getElementById(id);
 const MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
