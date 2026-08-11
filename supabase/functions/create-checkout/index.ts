@@ -40,13 +40,13 @@ Deno.serve(async (req) => {
     return json({ error: "Send valid JSON." }, 400);
   }
 
-  const product = clean(body.product) as "flight" | "hotel" | "both";
+  const product = clean(body.product) as "flight" | "hotel" | "both" | "return";
   const currency = (clean(body.currency) || "GHS").toUpperCase();
   const channel = (clean(body.channel) || "").toLowerCase(); // '', 'card' or 'mobile_money'
   const delivery = (clean(body.delivery_method) || "email").toLowerCase();
 
-  if (!["flight", "hotel", "both"].includes(product)) {
-    return json({ error: "Choose a flight, hotel, or combined reservation." }, 400);
+  if (!["flight", "hotel", "both", "return"].includes(product)) {
+    return json({ error: "Choose a flight, hotel, return, or combined reservation." }, 400);
   }
   if (!["GHS", "USD"].includes(currency)) {
     return json({ error: "Unsupported currency." }, 400);
@@ -114,6 +114,9 @@ Deno.serve(async (req) => {
     }
     if (order.return_date && order.return_date < order.depart_date) {
       return json({ error: "The return date can't be before the departure date." }, 400);
+    }
+    if (product === "return" && !order.return_date) {
+      return json({ error: "A return ticket needs a return date." }, 400);
     }
   }
   if (product !== "flight") {

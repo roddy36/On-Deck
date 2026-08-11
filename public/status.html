@@ -10,9 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F4EEE3;--surface:#FFFDF9;--ink:#2C2620;--body:#5E564B;--muted:#9A8E7C;
-    --blue:#B25C3B;--blue-ink:#8F4529;--blue-soft:#F3E6DB;--gold:#B08D57;--verified:#6E7A55;
-    --line:#E8DFCE;--line-soft:#F2EBDD;--warn:#A85A32;--r:16px;--pill:999px;
+    --bg:#F6F1E6;--surface:#FFFDF8;--ink:#29200F;--body:#5C5344;--muted:#9C9078;
+    --blue:#9C7C2F;--blue-ink:#7E621F;--blue-soft:#F1E9D0;--gold:#C2A24E;--verified:#6E7A55;
+    --line:#E9E0CB;--line-soft:#F3ECDA;--warn:#A85A32;--r:16px;--pill:999px;
     --shadow:0 18px 40px -22px rgba(20,24,28,.35);--shadow-sm:0 6px 18px -10px rgba(20,24,28,.28);
   }
   *{box-sizing:border-box}
@@ -210,7 +210,8 @@ function render(o) {
 
   $("s-doc").textContent = o.reference;
   $("s-type").textContent =
-    o.product === "flight" ? "Flight" : o.product === "hotel" ? "Hotel" : "Flight + hotel";
+    o.product === "flight" ? "Flight" : o.product === "hotel" ? "Hotel"
+      : o.product === "return" ? "Return flight" : "Flight + hotel";
 
   if (o.product === "hotel") {
     $("s-from").textContent = "HTL";
