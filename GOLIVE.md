@@ -60,6 +60,11 @@ supabase db push
 3. `…03_expiry_sweeper.sql` — the hold-expiry job
 4. `…04_passengers.sql` — multi-traveller columns
 5. `…05_status_rate_limit.sql` — throttled status lookup
+6. `…06_delivery_method.sql` — email / WhatsApp / both delivery column
+7. `…07_return_enum.sql` — adds the `return` product to the enum (must be its
+   own migration — Postgres won't use a new enum value in the transaction that
+   created it)
+8. `…08_reprice.sql` — sets live prices and inserts the return product rows
 
 Confirm it worked (Supabase → SQL editor):
 
@@ -70,26 +75,37 @@ select * from cron.job;   -- the expiry sweeper should be listed
 
 ---
 
-## Phase 2 — Set real prices
+## Phase 2 — Confirm / adjust prices
 
-The prices in migration 1 are **placeholders**. Set the real ones once suppliers
-have quoted. Money is in **minor units** (pesewas / cents) — `29000` = GH₵290.00.
+Migration `…08_reprice.sql` already sets live prices (minor units — pesewas /
+cents, per traveller):
+
+| Product | GHS | USD |
+|---------|-----|-----|
+| flight (visa)   | 35000 (GH₵350) | 2900 ($29) |
+| hotel           | 34000 (GH₵340) | 2800 ($28) |
+| both            | 54000 (GH₵540) | 4500 ($45) |
+| return          | 30000 (GH₵300) | 2500 ($25) |
+
+You only need this phase if you want **different** numbers. To change one:
 
 ```sql
 update products set price_minor = <PESEWAS>, updated_at = now()
   where code = 'flight' and currency = 'GHS';
--- repeat for hotel / both, and for USD rows if you sell in USD
+-- repeat per code / currency as needed
 ```
 
-Then mirror the same numbers in the browser so the displayed price matches the
-charge. In **`public/index.html`**, edit:
+If you change any price, mirror the same numbers in the browser so the displayed
+price matches the charge. In **`public/index.html`**, edit:
 
 ```js
-var DBPRICES = { GHS:{flight:29000,hotel:33000,both:52000}, USD:{flight:2500,hotel:2800,both:4500} };
+var DBPRICES = { GHS:{flight:35000,hotel:34000,both:54000,'return':30000}, USD:{flight:2900,hotel:2800,both:4500,'return':2500} };
 ```
 
-(The server always re-prices from the DB — this line is display only — but they
-must agree or customers see one number and get charged another.)
+…and the pricing-card figures and the FAQ/chatbot price lines in the same file.
+
+(The server always re-prices from the DB — the browser copy is display only — but
+they must agree, or customers see one number and get charged another.)
 
 ---
 
